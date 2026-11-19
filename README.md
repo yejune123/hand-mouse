@@ -4,10 +4,10 @@
 
 ## 한 줄 설치
 
-Windows PowerShell에서 다음 명령을 실행합니다. 최신 릴리스 ZIP과 SHA-256 확인 파일을 내려받아 검사한 뒤 사용자 설치 폴더에 설치하고 실행합니다.
+Windows 터미널, 명령 프롬프트(CMD), PowerShell 중 어디서든 다음 명령을 실행합니다. 최신 릴리스 ZIP과 SHA-256 확인 파일을 내려받아 검사한 뒤 사용자 설치 폴더에 설치하고 실행합니다.
 
-```powershell
-irm https://raw.githubusercontent.com/yejune123/hand-mouse/main/install.ps1 | iex
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/yejune123/hand-mouse/main/install.ps1 | iex"
 ```
 
 릴리스가 아직 생성되지 않았거나 저장소 주소가 다르면 설치할 수 없습니다. 출처를 확인한 다음 실행하세요. 기존 버전이 실행 중이라면 종료하고 다시 설치하세요.
