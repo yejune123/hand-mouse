@@ -4,7 +4,7 @@
 
 ## 한 줄 설치
 
-Windows 터미널, 명령 프롬프트(CMD), PowerShell 중 어디서든 다음 명령을 실행합니다. 최신 릴리스 ZIP과 SHA-256 확인 파일을 내려받아 검사한 뒤 사용자 설치 폴더에 설치하고 실행합니다.
+Windows 터미널, 명령 프롬프트(CMD), PowerShell 중 어디서든 다음 명령을 실행합니다. 최신 릴리스 ZIP과 SHA-256 확인 파일을 내려받아 검사한 뒤 `%LOCALAPPDATA%\Programs\HandMouse`에 설치합니다. 설치가 끝나면 바탕화면에 `HandMouse` 바로가기를 만들고 앱을 자동 실행합니다.
 
 ```bat
 powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/yejune123/hand-mouse/main/install.ps1 | iex"
