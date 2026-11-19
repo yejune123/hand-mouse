@@ -17,16 +17,16 @@ class GestureTests(unittest.TestCase):
     def test_pointer_movement_modes(self):
         screen = (0, 0, 1000, 800)
         relative = pointer_target(.6, .5, (.5, .5), (300, 250), screen,
-                                  Settings(movement_mode="�� �̵���", sensitivity=1))
+                                  Settings(movement_mode="손 이동량", sensitivity=1))
         absolute = pointer_target(.6, .5, (.5, .5), (300, 250), screen,
-                                  Settings(movement_mode="ȭ�� ��ġ", sensitivity=1))
+                                  Settings(movement_mode="화면 위치", sensitivity=1))
         self.assertAlmostEqual(relative[0], 300 + .1 * 1000 / .76)
         self.assertAlmostEqual(absolute[0], (.6 - .12) / .76 * 999)
         self.assertNotEqual(relative, absolute)
 
     def test_pointer_choices(self):
         middle = GestureEngine(Settings()).update(hand(), 0)[0]
-        thumb = GestureEngine(Settings(pointer_mode="���� ��")).update(hand(), 0)[0]
+        thumb = GestureEngine(Settings(pointer_mode="엄지 끝")).update(hand(), 0)[0]
         self.assertEqual(middle, ("move", 0.5, 0.4))
         self.assertEqual(thumb, ("move", 0.4, 0.4))
 
@@ -53,7 +53,7 @@ class GestureTests(unittest.TestCase):
         self.assertEqual(engine.update(hand(), 0.1)[0], ("left_click",))
 
     def test_scroll_direction_and_sensitivity(self):
-        settings = Settings(scroll_direction="�հ� �ݴ� ����", scroll_sensitivity=2.0)
+        settings = Settings(scroll_direction="손과 반대 방향", scroll_sensitivity=2.0)
         engine = GestureEngine(settings)
         engine.update(hand(index=(0.41, 0.4)), 0)
         engine.update(hand(thumb=(0.4, 0.29), index=(0.41, 0.29)), 0.1)
@@ -71,3 +71,4 @@ class GestureTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
