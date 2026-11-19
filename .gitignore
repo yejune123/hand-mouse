@@ -1,0 +1,19 @@
+# Keep the public repository limited to reviewed Windows source files.
+*
+!/.gitignore
+!/README.md
+!/app.py
+!/gesture.py
+!/mouse_win.py
+!/test_gesture.py
+!/build.ps1
+!/install.ps1
+!/requirements-build.txt
+!/assets/
+/assets/*
+!/assets/.gitkeep
+!/.github/
+/.github/*
+!/.github/workflows/
+/.github/workflows/*
+!/.github/workflows/release.yml
