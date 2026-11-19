@@ -1,0 +1,47 @@
+name: Windows release
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download verified hand model
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory assets -Force | Out-Null
+          Invoke-WebRequest 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task' -OutFile assets/hand_landmarker.task
+          $actual = (Get-FileHash assets/hand_landmarker.task -Algorithm SHA256).Hash
+          if ($actual -ne 'FBC2A30080C3C557093B5DDFC334698132EB341044CCEE322CCF8BCF3607CDE1') { throw 'Model checksum mismatch' }
+      - name: Test gesture engine
+        run: python -m unittest -v test_gesture
+      - name: Build application
+        shell: pwsh
+        run: ./build.ps1 -Python python
+      - name: Package and hash
+        shell: pwsh
+        run: |
+          Compress-Archive -Path dist/HandMouse -DestinationPath HandMouse-Windows.zip
+          (Get-FileHash HandMouse-Windows.zip -Algorithm SHA256).Hash | Set-Content HandMouse-Windows.zip.sha256 -NoNewline
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create $env:GITHUB_REF_NAME HandMouse-Windows.zip HandMouse-Windows.zip.sha256 --title $env:GITHUB_REF_NAME --generate-notes
+      - name: Keep manual build artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: HandMouse-Windows
+          path: HandMouse-Windows.zip
