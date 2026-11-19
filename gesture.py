@@ -8,14 +8,14 @@ from math import hypot
 @dataclass
 class Settings:
     camera: int = 0
-    pointer_mode: str = "���������� ����"
+    pointer_mode: str = "엄지·검지 사이"
     sensitivity: float = 1.0
-    movement_mode: str = "�� �̵���"
+    movement_mode: str = "손 이동량"
     smoothing: float = 0.35
     pinch_ratio: float = 0.42
     scroll_threshold: float = 0.025
     scroll_sensitivity: float = 1.0
-    scroll_direction: str = "�հ� ���� ����"
+    scroll_direction: str = "손과 같은 방향"
     stop_key: str = "F8"
     pause_on_external: bool = True
 
@@ -27,7 +27,7 @@ def distance(a, b):
 def pointer_target(x, y, previous, current, screen, settings):
     """Map a detected point to a desktop position using the chosen mode."""
     rx, ry, width, height = screen
-    if settings.movement_mode == "ȭ�� ��ġ":
+    if settings.movement_mode == "화면 위치":
         sx = max(0.0, min(1.0, (x - 0.12) / 0.76))
         sy = max(0.0, min(1.0, (y - 0.12) / 0.76))
         sx = max(0.0, min(1.0, 0.5 + (sx - 0.5) * settings.sensitivity))
@@ -81,7 +81,7 @@ class GestureEngine:
         ratio = distance(thumb, index) / palm
         # A wider release threshold prevents one noisy frame from ending a pinch.
         pinched = ratio < s.pinch_ratio * (1.35 if self.pinching else 1.0)
-        if s.pointer_mode == "���� ��":
+        if s.pointer_mode == "엄지 끝":
             pointer = (thumb.x, thumb.y)
         else:
             pointer = (mid_x, mid_y)
@@ -101,7 +101,7 @@ class GestureEngine:
                     self.scroll_y = mid_y
                 elif self.scrolled:
                     delta = self.scroll_y - mid_y
-                    direction = -1 if s.scroll_direction == "�հ� �ݴ� ����" else 1
+                    direction = -1 if s.scroll_direction == "손과 반대 방향" else 1
                     steps = int(direction * delta * s.scroll_sensitivity / s.scroll_threshold)
                     if steps:
                         actions.append(("scroll", max(-5, min(5, steps))))
@@ -116,3 +116,4 @@ class GestureEngine:
                 actions.insert(0, ("left_click",))
             self.reset()
         return actions
+
