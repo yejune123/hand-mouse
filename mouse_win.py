@@ -57,7 +57,7 @@ user32.SendInput.restype = ctypes.c_uint
 def cursor_position():
     p = POINT()
     if not user32.GetCursorPos(ctypes.byref(p)):
-        raise OSError("Ŀ�� ��ġ�� ���� �� �����ϴ�.")
+        raise OSError("커서 위치를 읽을 수 없습니다.")
     return p.x, p.y
 
 
@@ -99,7 +99,7 @@ class PhysicalMouseWatcher:
         self._proc = HOOKPROC(self._callback)
         self._hook = user32.SetWindowsHookExW(14, self._proc, None, 0)
         if not self._hook:
-            self.error = "�ٸ� ���콺 �Է� ���� ����� ������ �� �����ϴ�."
+            self.error = "다른 마우스 입력 감지 기능을 시작할 수 없습니다."
             self._ready.set()
             return
         self._ready.set()
@@ -145,3 +145,4 @@ def click_right():
 
 def scroll(steps):
     mouse(WHEEL, ctypes.c_ulong(steps * 120).value)
+
